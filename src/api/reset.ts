@@ -1,0 +1,8 @@
+import type {Request, Response} from 'express'
+import { config } from '../config.js';
+
+export const handleReset = (_: Request, res: Response)=>{
+    config.fileServerHits = 0
+    res.write("Hits reset to 0");
+    res.end();
+}
