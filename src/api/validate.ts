@@ -1,30 +1,20 @@
 import type {NextFunction, Request, Response} from 'express'
+import errorHandler from './error.js'
 
 type Data = {
   body: string
 }
 export const handleValidate = async (req: Request, res: Response, next: NextFunction)=>{
-
-    let body = ''
-
-    // 2. Listen for data events
-    req.on("data",(chunk: Data)=>{
-        body += chunk
-    })
+    const body: Data = req.body
+    const spacialWords = ['kerfuffle', 'sharbert', 'fornax']
     
 
-    req.on("end",()=>{
-        try{
-        const parsedBody: Data = JSON.parse(body)
-        console.log("Parsed Body", parsedBody)
-         if(parsedBody.body.length >= 140){
-            res.status(400).send({error: "Chirp is too long"})
-         } else {
-            res.status(200).send({valid: true})
-         }
-        } catch(error){
-            res.status(400).send({error: "Something went wrong"})
-        }
-    })
-    
+    if(body.body.length >= 140){
+        res.status(400).send(errorHandler)
+    } else{
+        const words = body.body.split(' ')
+        const cleanBody = words.map(word => spacialWords.includes(word.toLowerCase()) ? '****' : word).join(' ')
+
+        res.status(200).send({cleanedBody: cleanBody})
+    }
 }
