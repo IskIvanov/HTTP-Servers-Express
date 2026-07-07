@@ -1,11 +1,9 @@
 import express from "express";
-import type {Request, Response} from "express";
 import { handlerReadiness } from "./api/readiness.js";
-import { middlewareLogResponse, middlewareMetricsInc } from "./api/middleware.js";
+import errorHandler, { middlewareLogResponse, middlewareMetricsInc } from "./api/middleware.js";
 import { handleMetrics } from "./api/metrics.js";
 import { handleReset } from "./api/reset.js";
 import { handleValidate } from "./api/validate.js";
-import errorHandler from "./api/error.js";
 
 const app = express();
 const PORT = 8080;
