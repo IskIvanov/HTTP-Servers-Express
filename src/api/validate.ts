@@ -1,5 +1,5 @@
 import type {NextFunction, Request, Response} from 'express'
-import errorHandler from './error.js'
+import { BadRequest } from './middleware.js'
 
 type Data = {
   body: string
@@ -9,8 +9,9 @@ export const handleValidate = async (req: Request, res: Response, next: NextFunc
     const spacialWords = ['kerfuffle', 'sharbert', 'fornax']
     
 
-    if(body.body.length >= 140){
-        res.status(400).send(errorHandler)
+    const maxLenght = 140
+    if(body.body.length >= maxLenght){
+        throw new BadRequest(`Chirp is too long. Max length is ${maxLenght}`)
     } else{
         const words = body.body.split(' ')
         const cleanBody = words.map(word => spacialWords.includes(word.toLowerCase()) ? '****' : word).join(' ')

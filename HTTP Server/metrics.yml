@@ -10,7 +10,7 @@ http:
     type: json
     data: |-
       {
-        "body": "This is an opinion I need to share with the world "
+        "bod": "This is an kerfuffle I need to share with the world This is an kerfuffle I need to share with the world This is an kerfuffle I need to share with the world This is an kerfuffle I need to share with the world This is an kerfuffle I need to share with the world "
       }
   auth: inherit
 
