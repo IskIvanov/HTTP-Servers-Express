@@ -8,6 +8,8 @@ import { handleValidate } from "./api/validate.js";
 import { config } from "./config.js";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { drizzle } from "drizzle-orm/postgres-js";
+import { handleCreateUser } from "./api/create.js";
+import { handleDeleteAllUsers } from "./api/resetUsers.js";
 
 const migrationClient = postgres(config.db.url, {max: 1});
 await migrate(drizzle(migrationClient), config.db.migrationConfig);
@@ -21,6 +23,8 @@ app.use("/app", middlewareMetricsInc, express.static("./src/app"));
 
 app.get("/api/healthz", handlerReadiness);
 app.post("/api/validate_chirp", handleValidate)
+app.post("/api/users", handleCreateUser);
+app.post("/api/reset", handleDeleteAllUsers);
 app.get("/admin/metrics", handleMetrics);
 app.post("/admin/reset", handleReset);
 
