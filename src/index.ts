@@ -10,23 +10,25 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import { handleCreateUser } from "./api/create.js";
 import { handleDeleteAllUsers } from "./api/resetUsers.js";
 import { handleCreateChirp } from "./api/createChirp.js";
+import { handleGetChirps } from "./api/getChirps.js";
 
 const migrationClient = postgres(config.db.url, {max: 1});
 await migrate(drizzle(migrationClient), config.db.migrationConfig);
 
 const app = express();
 const PORT = 8080;
-
 app.use(middlewareLogResponse);
 app.use(express.json())
 app.use("/app", middlewareMetricsInc, express.static("./src/app"));
 
+// TODO: Add a resolver to all the handlers in the route.
 app.get("/api/healthz", handlerReadiness);
 app.post("/api/users", handleCreateUser);
 app.post("/api/reset", handleDeleteAllUsers);
 app.post("/api/chirps", handleCreateChirp);
-app.get("/admin/metrics", handleMetrics);
+app.get("/api/chirps", handleGetChirps);
 app.post("/admin/reset", handleReset);
+app.get("/admin/metrics", handleMetrics);
 
 app.use(errorHandler);
 
