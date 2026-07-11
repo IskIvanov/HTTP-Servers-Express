@@ -4,12 +4,12 @@ import { handlerReadiness } from "./api/readiness.js";
 import errorHandler, { middlewareLogResponse, middlewareMetricsInc } from "./api/middleware.js";
 import { handleMetrics } from "./api/metrics.js";
 import { handleReset } from "./api/reset.js";
-import { handleValidate } from "./api/validate.js";
 import { config } from "./config.js";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { drizzle } from "drizzle-orm/postgres-js";
 import { handleCreateUser } from "./api/create.js";
 import { handleDeleteAllUsers } from "./api/resetUsers.js";
+import { handleCreateChirp } from "./api/createChirp.js";
 
 const migrationClient = postgres(config.db.url, {max: 1});
 await migrate(drizzle(migrationClient), config.db.migrationConfig);
@@ -22,9 +22,9 @@ app.use(express.json())
 app.use("/app", middlewareMetricsInc, express.static("./src/app"));
 
 app.get("/api/healthz", handlerReadiness);
-app.post("/api/validate_chirp", handleValidate)
 app.post("/api/users", handleCreateUser);
 app.post("/api/reset", handleDeleteAllUsers);
+app.post("/api/chirps", handleCreateChirp);
 app.get("/admin/metrics", handleMetrics);
 app.post("/admin/reset", handleReset);
 

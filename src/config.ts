@@ -12,7 +12,7 @@ type APIConfig = {
 };
 
 process.loadEnvFile()
-
+// @todo: Switching environments does not work when restarting the server.
 function envOrThrow(key: string) {
   const value = process.env[key];
   if (!value) {

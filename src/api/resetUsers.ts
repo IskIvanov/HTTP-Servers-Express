@@ -9,6 +9,11 @@ export const handleDeleteAllUsers = async (req: Request, res: Response, next: Ne
         next(new Forbidden("Reset is only allowed in the dev environment"));
         return;
     }
-    await deleteAllUsers();
-    res.status(200).json({ message: "All users deleted" });
+    try {
+        await deleteAllUsers();
+        res.status(200).json({ message: "All users deleted" });
+    } catch (err) {
+        console.error("Error deleting users:", err)
+        res.status(400).json({ error: "Users could not be deleted." })
+    }
 }

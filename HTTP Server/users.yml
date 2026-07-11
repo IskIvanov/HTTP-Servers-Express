@@ -10,7 +10,7 @@ http:
     type: json
     data: |-
       {
-        "email": "mloneusk@example.co"
+        "email": "saul@bettercall.com"
       }
   auth: inherit
 
@@ -19,3 +19,4 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+​
