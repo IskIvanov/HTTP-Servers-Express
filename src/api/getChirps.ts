@@ -5,5 +5,6 @@ import { getChirps } from "../db/queries/getChirps.js";
 //  - same structure as the chirps
 export const handleGetChirps = async (req: Request, res: Response, next: NextFunction) => {
     const chirps = await getChirps()
+    const chipsId = req.params.id
     res.status(200).send(chirps)
 }
