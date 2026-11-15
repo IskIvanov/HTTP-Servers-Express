@@ -24,7 +24,7 @@
     "@types/bun": "latest"
   },
   "dependencies": {
-    "argon2": "^0.44.0",
+    "argon2": "^0.45.2",
     "drizzle-orm": "^0.45.2",
     "express": "^5.2.1",
     "postgres": "^3.4.9"

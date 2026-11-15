@@ -12,6 +12,7 @@ import { handleDeleteAllUsers } from "./api/resetUsers.js";
 import { handleCreateChirp } from "./api/createChirp.js";
 import { handleGetChirps } from "./api/getChirps.js";
 import { handleGetChirpsById } from "./api/getChirpsById.js";
+import { handleUserLogin } from "./api/userLogin.js";
 
 const migrationClient = postgres(config.db.url, {max: 1});
 await migrate(drizzle(migrationClient), config.db.migrationConfig);
@@ -36,7 +37,7 @@ app.post("/admin/reset", handleReset);
 
 app.get("/admin/metrics", handleMetrics);
 
-// app.get('api/login', ()={})
+app.post("/api/login", handleUserLogin);
 
 app.use(errorHandler);
 
