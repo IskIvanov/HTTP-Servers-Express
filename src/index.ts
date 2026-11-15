@@ -24,13 +24,19 @@ app.use("/app", middlewareMetricsInc, express.static("./src/app"));
 
 // TODO: Add a resolver to all the handlers in the route.
 app.get("/api/healthz", handlerReadiness);
+
 app.post("/api/users", handleCreateUser);
 app.post("/api/reset", handleDeleteAllUsers);
 app.post("/api/chirps", handleCreateChirp);
+
 app.get("/api/chirps", handleGetChirps);
 app.get("/api/chirps/:id", handleGetChirpsById);
+
 app.post("/admin/reset", handleReset);
+
 app.get("/admin/metrics", handleMetrics);
+
+// app.get('api/login', ()={})
 
 app.use(errorHandler);
 

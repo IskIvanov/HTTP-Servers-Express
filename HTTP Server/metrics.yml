@@ -5,12 +5,12 @@ info:
 
 http:
   method: POST
-  url: http://localhost:8080/api/validate_chirp
+  url: http://localhost:8080/api/reset
   body:
     type: json
     data: |-
       {
-        "bod": "This is an kerfuffle I need to share with the world This is an kerfuffle I need to share with the world This is an kerfuffle I need to share with the world This is an kerfuffle I need to share with the world This is an kerfuffle I need to share with the world "
+        "email": "hello@myoldfriend"
       }
   auth: inherit
 
@@ -19,3 +19,7 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+
+docs: |
+  #### Endpoint 
+  This is a reset endpoint responsible for building ...

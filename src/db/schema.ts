@@ -25,4 +25,5 @@ export const chirps = pgTable("chirps", {
 })
 
 export type NewUser = typeof users.$inferInsert;
+export type User = typeof users.$inferSelect;
 export type NewChirp = typeof chirps.$inferInsert;
