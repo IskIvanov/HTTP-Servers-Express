@@ -1,3 +1,6 @@
-export async function updateToChirpyRed() {
-    sql.addChir;
+import { db } from "../index.js";
+import { users } from "../schema.js";
+
+export async function updateToChirpyRed(id: string) {
+    return await db.update(users);
 }
