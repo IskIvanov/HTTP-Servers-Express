@@ -1,18 +1,18 @@
-import postgres from "postgres";
-import express from "express";
-import { handlerReadiness } from "./api/readiness.js";
-import errorHandler, { middlewareLogResponse, middlewareMetricsInc } from "./api/middleware.js";
-import { handleMetrics } from "./api/metrics.js";
-import { handleReset } from "./api/reset.js";
-import { config } from "./config.js";
-import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { drizzle } from "drizzle-orm/postgres-js";
+import { migrate } from "drizzle-orm/postgres-js/migrator";
+import express from "express";
+import postgres from "postgres";
 import { handleCreateUser } from "./api/create.js";
-import { handleDeleteAllUsers } from "./api/resetUsers.js";
 import { handleCreateChirp } from "./api/createChirp.js";
 import { handleGetChirps } from "./api/getChirps.js";
 import { handleGetChirpsById } from "./api/getChirpsById.js";
+import { handleMetrics } from "./api/metrics.js";
+import errorHandler, { middlewareLogResponse, middlewareMetricsInc } from "./api/middleware.js";
+import { handlerReadiness } from "./api/readiness.js";
+import { handleReset } from "./api/reset.js";
+import { handleDeleteAllUsers } from "./api/resetUsers.js";
 import { handleUserLogin } from "./api/userLogin.js";
+import { config } from "./config.js";
 
 const migrationClient = postgres(config.db.url, { max: 1 });
 await migrate(drizzle(migrationClient), config.db.migrationConfig);

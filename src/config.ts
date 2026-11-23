@@ -1,4 +1,4 @@
-import { MigrationConfig } from "drizzle-orm/migrator";
+import type { MigrationConfig } from "drizzle-orm/migrator";
 
 type DBConfig = {
     migrationConfig: MigrationConfig;
