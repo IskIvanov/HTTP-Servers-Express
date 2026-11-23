@@ -5,7 +5,7 @@ import { users } from "../schema.js";
 export async function updateToChirpyRed(id: string) {
     const [result] = await db
         .update(users)
-        .set({ is_chirpy_red: true })
+        .set({ isChirpyRed: true })
         .where(eq(users.id, id))
         .returning();
     return result;

@@ -8,6 +8,7 @@ import { handleGetChirps } from "./api/getChirps.js";
 import { handleGetChirpsById } from "./api/getChirpsById.js";
 import { handleMetrics } from "./api/metrics.js";
 import errorHandler, { middlewareLogResponse, middlewareMetricsInc } from "./api/middleware.js";
+import { handlePolkaWebhook } from "./api/polkaWebhook.js";
 import { handlerReadiness } from "./api/readiness.js";
 import { handleReset } from "./api/reset.js";
 import { handleDeleteAllUsers } from "./api/resetUsers.js";
@@ -38,6 +39,8 @@ app.post("/admin/reset", handleReset);
 app.get("/admin/metrics", handleMetrics);
 
 app.post("/api/login", handleUserLogin);
+
+app.post("/api/polka/webhooks", handlePolkaWebhook);
 
 app.use(errorHandler);
 

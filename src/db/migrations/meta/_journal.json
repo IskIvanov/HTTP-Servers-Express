@@ -36,6 +36,13 @@
       "when": 1795464320956,
       "tag": "0004_jazzy_tomas",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1795470026807,
+      "tag": "0005_fix_is_chirpy_red",
+      "breakpoints": true
     }
   ]
 }

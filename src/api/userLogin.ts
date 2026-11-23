@@ -36,7 +36,7 @@ export const handleUserLogin = async (req: Request, res: Response, next: NextFun
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
             email: user.email,
-            is_chirpy_red: user.is_chirpy_red,
+            isChirpyRed: user.isChirpyRed,
         };
         res.status(200).send(userResponse);
     } catch (err) {

@@ -1,10 +1,10 @@
-import type { NextFunction, Request, Response } from "express";
+import type { Request, Response } from "express";
 import { BadRequest } from "./errors.js";
 
 type Data = {
     body: string;
 };
-export const handleValidate = async (req: Request, res: Response, next: NextFunction) => {
+export const handleValidate = async (req: Request, res: Response) => {
     const body: Data = req.body;
     const spacialWords = ["kerfuffle", "sharbert", "fornax"];
 

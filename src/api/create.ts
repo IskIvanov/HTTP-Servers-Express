@@ -29,7 +29,7 @@ export const handleCreateUser = async (req: Request, res: Response) => {
                 createdAt: newUser.createdAt,
                 updatedAt: newUser.updatedAt,
                 email: newUser.email,
-                is_chirpy_red: false,
+                isChirpyRed: newUser.isChirpyRed,
             };
             res.status(201).send(userResponse);
         }

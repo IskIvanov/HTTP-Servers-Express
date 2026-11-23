@@ -9,7 +9,7 @@ export const users = pgTable("users", {
         .$onUpdate(() => new Date()),
     email: varchar("email", { length: 256 }).unique().notNull(),
     hashed_passwords: varchar("hashed_passwords", { length: 256 }).default("unset"),
-    is_chirpy_red: boolean("false"),
+    isChirpyRed: boolean("is_chirpy_red").notNull().default(false),
 });
 
 export const chirps = pgTable("chirps", {
