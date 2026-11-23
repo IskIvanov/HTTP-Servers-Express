@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { config } from "../config.js";
-import { Forbidden } from "./middleware.js";
+import { Forbidden } from "./errors.js";
 import { deleteAllUsers } from "../db/queries/reset.js";
 
 export const handleDeleteAllUsers = async (req: Request, res: Response, next: NextFunction) => {

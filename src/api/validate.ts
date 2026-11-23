@@ -1,5 +1,5 @@
 import type {NextFunction, Request, Response} from 'express'
-import { BadRequest } from './middleware.js'
+import { BadRequest } from './errors.js'
 
 type Data = {
   body: string
