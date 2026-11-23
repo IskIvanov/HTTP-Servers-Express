@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from "express";
-import { BadRequest } from "./errors.js";
+import type { NextFunction, Request, Response } from "express";
 import { insertChirp } from "../db/queries/insertChirp.js";
+import { BadRequest } from "./errors.js";
 
 // Request body type for creating a chirp
 interface CreateChirpRequestBody {

@@ -1,6 +1,12 @@
+import { eq } from "drizzle-orm";
 import { db } from "../index.js";
 import { users } from "../schema.js";
 
 export async function updateToChirpyRed(id: string) {
-    // return await db.update(users).set();
+    const [result] = await db
+        .update(users)
+        .set({ is_chirpy_red: true })
+        .where(eq(users.id, id))
+        .returning();
+    return result;
 }

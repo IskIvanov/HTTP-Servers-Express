@@ -1,8 +1,8 @@
-import type { Request, Response, NextFunction } from "express";
-import { getUserByEmail } from "../db/queries/users.js";
+import type { NextFunction, Request, Response } from "express";
 import { checkPasswordHash } from "../auth.js";
-import { BadRequest, Unauthorized } from "./errors.js";
+import { getUserByEmail } from "../db/queries/users.js";
 import type { UserResponse } from "./create.js";
+import { BadRequest, Unauthorized } from "./errors.js";
 
 const ERROR_MESSAGES = {
     MISSING_CREDENTIALS: "Email and password are required.",
@@ -36,6 +36,7 @@ export const handleUserLogin = async (req: Request, res: Response, next: NextFun
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
             email: user.email,
+            is_chirpy_red: user.is_chirpy_red,
         };
         res.status(200).send(userResponse);
     } catch (err) {

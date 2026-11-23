@@ -1,7 +1,7 @@
-import type { Request, Response, NextFunction } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { config } from "../config.js";
-import { Forbidden } from "./errors.js";
 import { deleteAllUsers } from "../db/queries/reset.js";
+import { Forbidden } from "./errors.js";
 
 export const handleDeleteAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     console.log(config);
