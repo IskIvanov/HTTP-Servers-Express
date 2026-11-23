@@ -10,12 +10,16 @@
     "dev": "npx tsc && node dist/index.js",
     "dev:watch": "nodemon",
     "generate": "drizzle-kit generate",
-    "migrate": "drizzle-kit migrate"
+    "migrate": "drizzle-kit migrate",
+    "format": "biome format --write .",
+    "lint": "biome lint .",
+    "check": "biome check --write ."
   },
   "keywords": [],
   "author": "",
   "description": "Simple project for HTTP Servers from scratch",
   "devDependencies": {
+    "@biomejs/biome": "2.6.8",
     "@types/express": "^5.0.6",
     "@types/node": "^26.1.0",
     "drizzle-kit": "^0.31.10",
