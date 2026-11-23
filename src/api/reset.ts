@@ -1,7 +1,7 @@
-import type { Request, Response, NextFunction } from "express";
-import { config } from "../config.js";
-import { Forbidden } from "./middleware.js";
-import { deleteAllUsers } from "../db/queries/reset.js";
+import type { Request, Response, NextFunction } from 'express'
+import { config } from '../config.js';
+import { Forbidden } from './errors.js';
+import { deleteAllUsers } from '../db/queries/reset.js';
 
 export const handleReset = async (_: Request, res: Response, next: NextFunction) => {
     if (config.platform !== "dev") {
@@ -9,11 +9,11 @@ export const handleReset = async (_: Request, res: Response, next: NextFunction)
         return;
     }
     try {
-        config.fileServerHits = 0;
+        config.fileServerHits = 0
         await deleteAllUsers();
         res.write("Hits reset to 0 and all users deleted");
         res.end();
     } catch (err) {
         next(err);
     }
-};
+}

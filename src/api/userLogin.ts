@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { getUserByEmail } from "../db/queries/users.js";
 import { checkPasswordHash } from "../auth.js";
-import { BadRequest, Unauthorized } from "./middleware.js";
+import { BadRequest, Unauthorized } from "./errors.js";
 import type { UserResponse } from "./create.js";
 
 const ERROR_MESSAGES = {

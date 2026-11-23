@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { BadRequest } from "./middleware.js";
+import { BadRequest } from "./errors.js";
 import { insertChirp } from "../db/queries/insertChirp.js";
 
 // Request body type for creating a chirp
