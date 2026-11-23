@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 
-export const handlerReadiness = (req: Request, res: Response) => {
+export const handlerReadiness = (_req: Request, res: Response) => {
     res.set("Content-Type", "text/plain");
     res.set("charset=utf-8");
     res.send("OK");

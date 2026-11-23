@@ -19,7 +19,7 @@ export function middlewareMetricsInc(_: Request, __: Response, next: NextFunctio
     next();
 }
 
-function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
+function errorHandler(err: Error, _req: Request, res: Response, next: NextFunction) {
     console.log("Error occured:", err);
     if (err instanceof HttpError) {
         res.status(err.statusCode).json({ error: err.message });

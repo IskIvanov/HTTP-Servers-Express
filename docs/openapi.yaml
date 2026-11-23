@@ -1,0 +1,415 @@
+openapi: 3.1.0
+info:
+  title: Chirpy API
+  version: 0.0.1
+  description: |
+    A small Twitter-like REST API built with Express 5, PostgreSQL and Drizzle ORM.
+
+    Errors raised by handlers are returned by the central error handler as
+    `{ "error": "<message>" }` with the matching status code; unexpected
+    errors return `500` with `"Something went wrong on our end"`.
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:8080
+    description: Local development
+
+tags:
+  - name: health
+    description: Service status
+  - name: users
+    description: Sign-up and login
+  - name: chirps
+    description: Short posts (max 140 characters)
+  - name: webhooks
+    description: Callbacks from third-party services
+  - name: admin
+    description: Metrics and dev-only maintenance
+  - name: app
+    description: Static front-end file server
+
+paths:
+  /api/healthz:
+    get:
+      tags: [health]
+      summary: Readiness check
+      operationId: getHealthz
+      responses:
+        "200":
+          description: The server is up.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: OK
+
+  /api/users:
+    post:
+      tags: [users]
+      summary: Create a user
+      description: Hashes the password with Argon2 and stores the user. The password hash is never returned.
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Credentials"
+      responses:
+        "201":
+          description: User created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: The user could not be created (for example, the email is already taken).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                error: User could not be created.
+
+  /api/login:
+    post:
+      tags: [users]
+      summary: Log in
+      description: Verifies the email and password and returns the user.
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Credentials"
+      responses:
+        "200":
+          description: Credentials are valid.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Email or password is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                error: Email and password are required.
+        "401":
+          description: Email or password is wrong.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                error: Incorrect email or password
+
+  /api/chirps:
+    get:
+      tags: [chirps]
+      summary: List chirps
+      description: Returns every chirp, oldest first.
+      operationId: listChirps
+      responses:
+        "200":
+          description: All chirps.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Chirp"
+    post:
+      tags: [chirps]
+      summary: Create a chirp
+      description: |
+        Creates a chirp for the given user. The body must be shorter than 140
+        characters. The words "kerfuffle", "sharbert" and "fornax" (any case)
+        are replaced with `****`.
+      operationId: createChirp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateChirpRequest"
+      responses:
+        "201":
+          description: Chirp created. The returned body is the cleaned text.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Chirp"
+        "400":
+          description: The userId is not a UUID, or the body is too long.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                invalidUserId:
+                  value:
+                    error: Invalid userId. Must be a valid UUID.
+                tooLong:
+                  value:
+                    error: Chirp is too long. Max length is 140
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/chirps/{id}:
+    get:
+      tags: [chirps]
+      summary: Get a chirp by ID
+      operationId: getChirpById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The chirp's ID.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: The chirp.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Chirp"
+        "405":
+          description: No chirp has this ID. The response has no body.
+        "500":
+          description: The ID is not a valid UUID.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /api/polka/webhooks:
+    post:
+      tags: [webhooks]
+      summary: Polka payment webhook
+      description: |
+        Receives events from Polka. `user.upgraded` upgrades the user to
+        Chirpy Red. Any other event is acknowledged with `204` and ignored, so
+        Polka stops retrying it.
+      operationId: polkaWebhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PolkaWebhook"
+      responses:
+        "204":
+          description: Event handled or ignored.
+        "404":
+          description: The user in the event does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                error: User not found
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/reset:
+    post:
+      tags: [admin]
+      summary: Delete all users (dev only)
+      description: Deletes every user and, through the cascade, every chirp. Only allowed when `PLATFORM=dev`.
+      operationId: deleteAllUsers
+      responses:
+        "200":
+          description: All users deleted.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required: [message]
+              example:
+                message: All users deleted
+        "400":
+          description: The users could not be deleted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                error: Users could not be deleted.
+        "403":
+          $ref: "#/components/responses/DevOnly"
+
+  /admin/metrics:
+    get:
+      tags: [admin]
+      summary: File server hit count
+      description: An HTML page showing how many times `/app` has been visited since the server started.
+      operationId: getMetrics
+      responses:
+        "200":
+          description: Metrics page.
+          content:
+            text/html:
+              schema:
+                type: string
+              example: |
+                <html>
+                    <body>
+                        <h1>Welcome, Chirpy Admin</h1>
+                        <p>Chirpy has been visited 3 times!</p>
+                    </body>
+                </html>
+
+  /admin/reset:
+    post:
+      tags: [admin]
+      summary: Reset metrics and data (dev only)
+      description: Sets the hit counter to 0 and deletes every user and chirp. Only allowed when `PLATFORM=dev`.
+      operationId: resetAll
+      responses:
+        "200":
+          description: Reset done.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Hits reset to 0 and all users deleted
+        "403":
+          $ref: "#/components/responses/DevOnly"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /app/:
+    get:
+      tags: [app]
+      summary: Front-end home page
+      description: |
+        Serves static files from `src/app` (for example `/app/` and
+        `/app/assets/logo.png`). Each request increments the hit counter
+        shown at `/admin/metrics`.
+      operationId: getApp
+      responses:
+        "200":
+          description: The requested static file.
+          content:
+            text/html:
+              schema:
+                type: string
+
+components:
+  schemas:
+    Credentials:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 256
+          example: saul@bettercall.com
+        password:
+          type: string
+          format: password
+          example: "123456"
+
+    User:
+      type: object
+      required: [id, createdAt, updatedAt, email, isChirpyRed]
+      properties:
+        id:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        email:
+          type: string
+          format: email
+        isChirpyRed:
+          type: boolean
+          description: Whether the user has the Chirpy Red upgrade.
+
+    CreateChirpRequest:
+      type: object
+      required: [body, userId]
+      properties:
+        body:
+          type: string
+          maxLength: 139
+          example: I'm the one who knocks!
+        userId:
+          type: string
+          format: uuid
+          description: The author's user ID.
+
+    Chirp:
+      type: object
+      required: [id, createdAt, updatedAt, body, userId]
+      properties:
+        id:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        body:
+          type: string
+          maxLength: 140
+        userId:
+          type: string
+          format: uuid
+
+    PolkaWebhook:
+      type: object
+      required: [event, data]
+      properties:
+        event:
+          type: string
+          description: Event name. Only `user.upgraded` has an effect.
+          example: user.upgraded
+        data:
+          type: object
+          required: [userId]
+          properties:
+            userId:
+              type: string
+              format: uuid
+
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+
+  responses:
+    DevOnly:
+      description: Only allowed when the server runs with `PLATFORM=dev`.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error: Reset is only allowed in the dev environment
+    InternalError:
+      description: Unexpected server or database error.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error: Something went wrong on our end

@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { config } from "../config.js";
 
-export const handleMetrics = (req: Request, res: Response) => {
+export const handleMetrics = (_req: Request, res: Response) => {
     const NumberOfVisits = config.fileServerHits;
     res.set("Content-Type", "text/html; charset=utf-8");
     res.send(`

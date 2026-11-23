@@ -3,7 +3,7 @@ import { config } from "../config.js";
 import { deleteAllUsers } from "../db/queries/reset.js";
 import { Forbidden } from "./errors.js";
 
-export const handleDeleteAllUsers = async (req: Request, res: Response, next: NextFunction) => {
+export const handleDeleteAllUsers = async (_req: Request, res: Response, next: NextFunction) => {
     console.log(config);
     if (config.platform !== "dev") {
         next(new Forbidden("Reset is only allowed in the dev environment"));

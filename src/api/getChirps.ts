@@ -3,7 +3,7 @@ import { getChirps } from "../db/queries/getChirps.js";
 // TODO:
 //  - add try catch
 //  - same structure as the chirps
-export const handleGetChirps = async (req: Request, res: Response) => {
+export const handleGetChirps = async (_req: Request, res: Response) => {
     const chirps = await getChirps();
     res.status(200).send(chirps);
 };

@@ -1,7 +1,10 @@
+import { readFileSync } from "node:fs";
 import { drizzle } from "drizzle-orm/postgres-js";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import express from "express";
 import postgres from "postgres";
+import swaggerUi from "swagger-ui-express";
+import { parse as parseYaml } from "yaml";
 import { handleCreateUser } from "./api/create.js";
 import { handleCreateChirp } from "./api/createChirp.js";
 import { handleGetChirps } from "./api/getChirps.js";
@@ -23,6 +26,12 @@ const PORT = 8080;
 app.use(middlewareLogResponse);
 app.use(express.json());
 app.use("/app", middlewareMetricsInc, express.static("./src/app"));
+
+const openapiDoc = parseYaml(readFileSync("./docs/openapi.yaml", "utf8"));
+app.get("/api/openapi.json", (_req, res) => {
+    res.json(openapiDoc);
+});
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(openapiDoc));
 
 // TODO: Add a resolver to all the handlers in the route.
 app.get("/api/healthz", handlerReadiness);

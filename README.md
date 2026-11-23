@@ -48,6 +48,8 @@ The server also applies any pending migrations automatically on startup.
 
 ## API
 
+Interactive API docs (Swagger UI) are served at [http://localhost:8080/api/docs](http://localhost:8080/api/docs) while the server is running. The raw OpenAPI spec is at [http://localhost:8080/api/openapi.json](http://localhost:8080/api/openapi.json), and its source is [`docs/openapi.yaml`](docs/openapi.yaml).
+
 | Method | Path               | Description                    |
 | ------ | ------------------ | ------------------------------ |
 | GET    | `/api/healthz`     | Readiness check                |

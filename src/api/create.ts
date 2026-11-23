@@ -1,4 +1,4 @@
-import type { NextFunction, Request, Response } from "express";
+import type { Request, Response } from "express";
 import { hasPassword } from "../auth.js";
 import { createUser } from "../db/queries/users.js";
 import type { User } from "../db/schema.js";
