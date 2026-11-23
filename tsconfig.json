@@ -11,5 +11,5 @@
     "types": ["node"]
   },
   "include": ["./src/**/*.ts", "src/db/queries/getChirpsByIdts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "src/**/*.test.ts"]
 }
