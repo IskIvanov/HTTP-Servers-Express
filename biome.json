@@ -6,13 +6,7 @@
         "useIgnoreFile": true
     },
     "files": {
-        "includes": [
-            "**/*.ts",
-            "**/*.js",
-            "!!**/dist",
-            "!!**/drizzle",
-            "!!**/node_modules"
-        ]
+        "includes": ["**/*.ts", "**/*.js", "!!**/dist", "!!**/drizzle", "!!**/node_modules"]
     },
     "formatter": {
         "enabled": true,

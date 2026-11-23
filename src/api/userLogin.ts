@@ -7,7 +7,7 @@ import type { UserResponse } from "./create.js";
 const ERROR_MESSAGES = {
     MISSING_CREDENTIALS: "Email and password are required.",
     INVALID_CREDENTIALS: "Incorrect email or password",
-}
+};
 
 export interface LoginRequestBody {
     email: string;
@@ -41,4 +41,4 @@ export const handleUserLogin = async (req: Request, res: Response, next: NextFun
     } catch (err) {
         next(err);
     }
-}
+};

@@ -14,13 +14,13 @@ import { handleGetChirps } from "./api/getChirps.js";
 import { handleGetChirpsById } from "./api/getChirpsById.js";
 import { handleUserLogin } from "./api/userLogin.js";
 
-const migrationClient = postgres(config.db.url, {max: 1});
+const migrationClient = postgres(config.db.url, { max: 1 });
 await migrate(drizzle(migrationClient), config.db.migrationConfig);
 
 const app = express();
 const PORT = 8080;
 app.use(middlewareLogResponse);
-app.use(express.json())
+app.use(express.json());
 app.use("/app", middlewareMetricsInc, express.static("./src/app"));
 
 // TODO: Add a resolver to all the handlers in the route.
@@ -42,5 +42,5 @@ app.post("/api/login", handleUserLogin);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
+    console.log(`Server is running at http://localhost:${PORT}`);
 });

@@ -13,7 +13,7 @@ export const handleDeleteAllUsers = async (req: Request, res: Response, next: Ne
         await deleteAllUsers();
         res.status(200).json({ message: "All users deleted" });
     } catch (err) {
-        console.error("Error deleting users:", err)
-        res.status(400).json({ error: "Users could not be deleted." })
+        console.error("Error deleting users:", err);
+        res.status(400).json({ error: "Users could not be deleted." });
     }
-}
+};
