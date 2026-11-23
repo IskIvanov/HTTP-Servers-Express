@@ -1,0 +1,16 @@
+#!/bin/sh
+# Blocks the commit if lint/format, type-check, or tests fail.
+# Bypass in an emergency with: git commit --no-verify
+
+set -e
+
+echo "▶ biome check (lint + format)"
+bunx biome check .
+
+echo "▶ tsc --noEmit (type-check)"
+bunx tsc --noEmit
+
+echo "▶ vitest (tests)"
+bun run test
+
+echo "✔ pre-commit checks passed"
