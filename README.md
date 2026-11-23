@@ -1,5 +1,7 @@
 # Chirpy — HTTP Server in TypeScript
 
+![Chirpy API demo: sign up, log in, post and list chirps with curl](docs/demo.gif)
+
 A small Twitter-like REST API ("Chirpy") built from scratch with Express 5, PostgreSQL and Drizzle ORM, as part of the [Boot.dev](https://boot.dev) HTTP Servers course.
 
 ## Features

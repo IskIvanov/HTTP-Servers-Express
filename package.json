@@ -1,5 +1,5 @@
 {
-  "name": "http_servers",
+  "name": "chirpy-api",
   "version": "0.0.1",
   "main": "index.js",
   "license": "MIT",
@@ -20,7 +20,7 @@
   },
   "keywords": [],
   "author": "",
-  "description": "Simple project for HTTP Servers from scratch",
+  "description": "Chirpy — a Twitter-like REST API built with Express, PostgreSQL and Drizzle ORM",
   "devDependencies": {
     "@biomejs/biome": "2.6.8",
     "@types/bun": "latest",

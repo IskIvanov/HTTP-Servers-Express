@@ -3,7 +3,7 @@
   "configVersion": 0,
   "workspaces": {
     "": {
-      "name": "http_servers",
+      "name": "chirpy-api",
       "dependencies": {
         "argon2": "^0.45.2",
         "drizzle-orm": "^0.45.2",
